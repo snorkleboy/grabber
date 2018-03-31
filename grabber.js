@@ -18,9 +18,11 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {  
             try{
                 const username = JSON.parse(body).username
-                console.log("looking up",username)
-                getGitHubdata(username)
-                    .then(data => {writeData(data,username);res.end(JSON.stringify(data))})
+                getGitHubData(username)
+                    .then(data => {
+                        writeData(data,username);
+                        res.end(JSON.stringify(data))
+                    })
                     .catch(err=>{console.log(err);})
             } 
             catch (e) {
@@ -30,7 +32,7 @@ const server = http.createServer((req, res) => {
     }
 })
 
-function getGitHubdata(username){
+function getGitHubData(username){
     return new Promise((resolve,rej)=>{
         const opts = buildOptionsObj(username)
         https.get(opts, (dataStream) => {
